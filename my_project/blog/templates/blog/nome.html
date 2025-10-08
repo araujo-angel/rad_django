@@ -1,0 +1,7 @@
+{% extends 'blog/base.html' %}
+{% block title %}Nome{% endblock %}
+{% block content %}
+<h2>Usuário: {{ usuario }}</h2>
+<p>Número: {% widthratio numero 1 2 %}</p>
+<p>Data atual: {% now "d/m/Y" %}</p>
+{% endblock %}

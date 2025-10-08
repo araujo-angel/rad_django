@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %}
+{% block title %}Condicionais{% endblock %}
+{% block content %}
+{% if is_logged_in %}
+<p>Bem-vindo de volta!</p>
+{% else %}
+<p>Faça login para continuar.</p>
+{% endif %}
+
+{% if idade >= 18 %}
+<p>Maior de idade</p>
+{% else %}
+<p>Menor de idade</p>
+{% endif %}
+
+{% if role == "admin" %}
+<p>Você tem acesso de administrador.</p>
+{% elif role == "user" %}
+<p>Bem-vindo, usuário comum.</p>
+{% else %}
+<p>Função desconhecida.</p>
+{% endif %}
+{% endblock %}

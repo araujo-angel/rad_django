@@ -1,0 +1,12 @@
+{% extends 'biblioteca/base.html' %}
+{% block title %}{{ entidade|capfirst }} - Formulário{% endblock %}
+{% block content %}
+<h2 class="mb-4">{{ entidade|capfirst }} - Formulário</h2>
+
+<form method="post" class="mb-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary"> Salvar</button>
+    <a href="{% url 'listar' entidade %}" class="btn btn-secondary">⬅️ Voltar</a>
+</form>
+{% endblock %}

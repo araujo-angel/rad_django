@@ -1,6 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Autor, Editora, Livro
 from .forms import AutorForm, EditoraForm, LivroForm
+from django.shortcuts import render
+
+def base_view(request):
+    return render(request, 'biblioteca/base.html')
+
+def dashboard(request):
+    return render(request, 'biblioteca/dashboard.html')
 
 # Mapeia entidade → (modelo, form)
 MAPEAMENTO = {
@@ -20,6 +27,7 @@ def criar_objeto(request, entidade):
     _, Form = MAPEAMENTO.get(entidade, (None, None))
     if not Form:
         return render(request, 'biblioteca/erro.html', {'mensagem': f'Entidade "{entidade}" inválida.'})
+    
     if request.method == 'POST':
         form = Form(request.POST)
         if form.is_valid():
@@ -27,6 +35,7 @@ def criar_objeto(request, entidade):
             return redirect('listar', entidade=entidade)
     else:
         form = Form()
+
     return render(request, 'biblioteca/form.html', {'form': form, 'entidade': entidade})
 
 def editar_objeto(request, entidade, pk):

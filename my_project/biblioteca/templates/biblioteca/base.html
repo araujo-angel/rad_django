@@ -4,20 +4,228 @@
     <meta charset="UTF-8">
     <title>{% block title %}Biblioteca{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --cor-primaria: #be7756;
+            --cor-secundaria: #D9C8B4;
+            --cor-hover: #a66647;
+            --cor-texto-escuro: #5a4a3a;
+            --cor-texto-medio: #6b5a4a;
+        }
+
+        body {
+            background-color: var(--cor-secundaria) !important;
+            color: var(--cor-texto-escuro) !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--cor-primaria) !important;
+        }
+
+        .navbar {
+            background-color: var(--cor-primaria) !important;
+        }
+
+        .navbar-brand {
+            color: #fff !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+        }
+
+        .btn-primary {
+            background-color: var(--cor-primaria) !important;
+            border-color: var(--cor-primaria) !important;
+            color: #fff !important;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--cor-hover) !important;
+            border-color: var(--cor-hover) !important;
+            color: #fff !important;
+        }
+
+        .btn-outline-light {
+            color: #fff !important;
+            border-color: #fff !important;
+        }
+
+        .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            color: #fff !important;
+        }
+
+        .btn-light {
+            background-color: #fff !important;
+            color: var(--cor-primaria) !important;
+            border-color: #fff !important;
+        }
+
+        .btn-light:hover {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            color: var(--cor-hover) !important;
+        }
+
+        .card {
+            border: 2px solid var(--cor-primaria);
+            background-color: #fff;
+        }
+
+        .card-body {
+            color: var(--cor-texto-escuro);
+        }
+
+        .form-label {
+            color: var(--cor-texto-escuro) !important;
+            font-weight: 500;
+        }
+
+        .form-control, .form-select {
+            border-color: var(--cor-primaria);
+            color: var(--cor-texto-escuro);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--cor-primaria);
+            box-shadow: 0 0 0 0.25rem rgba(190, 119, 86, 0.25);
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: var(--cor-primaria);
+            color: #155724;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border-color: var(--cor-primaria);
+            color: #0c5460;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: var(--cor-primaria);
+            color: #721c24;
+        }
+
+        .page-link {
+            color: var(--cor-primaria);
+        }
+
+        .page-link:hover {
+            color: var(--cor-hover);
+            background-color: var(--cor-secundaria);
+        }
+
+        .page-item.active .page-link {
+            background-color: var(--cor-primaria);
+            border-color: var(--cor-primaria);
+            color: #fff;
+        }
+
+        a {
+            color: var(--cor-primaria);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--cor-hover);
+            text-decoration: underline;
+        }
+
+        footer {
+            color: var(--cor-texto-medio) !important;
+            border-color: var(--cor-primaria) !important;
+        }
+
+        .table {
+            color: var(--cor-texto-escuro);
+        }
+
+        .table thead {
+            background-color: var(--cor-primaria);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: var(--cor-texto-escuro);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        .text-muted {
+            color: var(--cor-texto-medio) !important;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
             <a class="navbar-brand" href="{% url 'dashboard' %}">📚 Biblioteca</a>
-            <div>
-                <a class="nav-link d-inline text-white" href="{% url 'listar' 'autor' %}">Autores</a>
-                <a class="nav-link d-inline text-white" href="{% url 'listar' 'editora' %}">Editoras</a>
-                <a class="nav-link d-inline text-white" href="{% url 'listar' 'livro' %}">Livros</a>
-            </div>
+
+            {% if user.is_authenticated %}
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'listar' 'autor' %}">Autores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'listar' 'editora' %}">Editoras</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'listar' 'livro' %}">Livros</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        <span class="text-white me-3">
+                            Olá, <strong>{{ user.first_name|default:user.username }}</strong>
+                        </span>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">Sair</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="d-flex">
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm me-2">Entrar</a>
+                    <a href="{% url 'signup' %}" class="btn btn-light btn-sm">Cadastrar</a>
+                </div>
+            {% endif %}
         </div>
     </nav>
 
     <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </div>

@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from .models import Autor, Editora, Livro
 from .forms import AutorForm, EditoraForm, LivroForm, SignUpForm, LoginForm
 from django.core.paginator import Paginator
+from django.core.exceptions import PermissionDenied
 def base_view(request):
     return render(request, 'biblioteca/base.html')
 
@@ -35,6 +36,10 @@ def listar_objetos(request, entidade):
 
 @login_required
 def criar_objeto(request, entidade):
+    # Verificar permissão para livros
+    if entidade == 'livro' and not request.user.has_perm('biblioteca.add_livro'):
+        raise PermissionDenied("Você não tem permissão para criar livros.")
+
     _, Form = MAPEAMENTO.get(entidade, (None, None))
     if not Form:
         return render(request, 'biblioteca/erro.html', {'mensagem': f'Entidade "{entidade}" inválida.'})
@@ -51,6 +56,10 @@ def criar_objeto(request, entidade):
 
 @login_required
 def editar_objeto(request, entidade, pk):
+    # Verificar permissão para livros
+    if entidade == 'livro' and not request.user.has_perm('biblioteca.change_livro'):
+        raise PermissionDenied("Você não tem permissão para editar livros.")
+
     modelo, Form = MAPEAMENTO.get(entidade, (None, None))
     if not modelo:
         return render(request, 'biblioteca/erro.html', {'mensagem': f'Entidade "{entidade}" inválida.'})
@@ -66,6 +75,10 @@ def editar_objeto(request, entidade, pk):
 
 @login_required
 def deletar_objeto(request, entidade, pk):
+    # Verificar permissão para livros
+    if entidade == 'livro' and not request.user.has_perm('biblioteca.delete_livro'):
+        raise PermissionDenied("Você não tem permissão para deletar livros.")
+
     modelo, _ = MAPEAMENTO.get(entidade, (None, None))
     if not modelo:
         return render(request, 'biblioteca/erro.html', {'mensagem': f'Entidade "{entidade}" inválida.'})
@@ -124,3 +137,10 @@ def logout_view(request):
     logout(request)
     messages.info(request, 'Você saiu da sua conta com sucesso.')
     return redirect('login')
+
+
+# ---- Handler para erro de permissão ----
+
+def permission_denied_view(request, exception=None):
+    """View customizada para erro 403 - Permissão Negada"""
+    return render(request, 'biblioteca/403.html', status=403)

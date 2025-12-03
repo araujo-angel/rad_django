@@ -1,0 +1,19 @@
+{% extends 'biblioteca/base.html' %}
+
+{% block title %}Acesso Negado{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <div class="alert alert-danger" role="alert">
+        <h1 class="display-1">🚫</h1>
+        <h2 class="mb-3">Acesso Negado</h2>
+        <p class="lead">Você não tem permissão para acessar esta página.</p>
+        <hr>
+        <p class="mb-0">
+            Para gerenciar livros, você precisa ter as permissões adequadas.
+            Entre em contato com o administrador do sistema se acredita que deveria ter acesso.
+        </p>
+    </div>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary mt-3">⬅️ Voltar ao Dashboard</a>
+</div>
+{% endblock %}

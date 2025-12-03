@@ -22,3 +22,6 @@ urlpatterns = [
     path('blog/', include("blog.urls")),
     path('biblioteca/', include("biblioteca.urls")),
 ]
+
+# Handler customizado para erro 403
+handler403 = 'biblioteca.views.permission_denied_view'

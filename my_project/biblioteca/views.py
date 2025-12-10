@@ -144,3 +144,39 @@ def logout_view(request):
 def permission_denied_view(request, exception=None):
     """View customizada para erro 403 - Permissão Negada"""
     return render(request, 'biblioteca/403.html', status=403)
+
+
+# ---- API REST Views ----
+
+from rest_framework import viewsets
+from .serializers import AutorSerializer, EditoraSerializer
+
+
+class AutorViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet para CRUD completo de Autor
+    Endpoints:
+    - GET /api/autores/ - Lista todos os autores
+    - POST /api/autores/ - Cria um novo autor
+    - GET /api/autores/{id}/ - Retorna um autor específico
+    - PUT /api/autores/{id}/ - Atualiza um autor
+    - PATCH /api/autores/{id}/ - Atualiza parcialmente um autor
+    - DELETE /api/autores/{id}/ - Deleta um autor
+    """
+    queryset = Autor.objects.all()
+    serializer_class = AutorSerializer
+
+
+class EditoraViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet para CRUD completo de Editora
+    Endpoints:
+    - GET /api/editoras/ - Lista todas as editoras
+    - POST /api/editoras/ - Cria uma nova editora
+    - GET /api/editoras/{id}/ - Retorna uma editora específica
+    - PUT /api/editoras/{id}/ - Atualiza uma editora
+    - PATCH /api/editoras/{id}/ - Atualiza parcialmente uma editora
+    - DELETE /api/editoras/{id}/ - Deleta uma editora
+    """
+    queryset = Editora.objects.all()
+    serializer_class = EditoraSerializer
